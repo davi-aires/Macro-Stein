@@ -1,0 +1,9 @@
+{
+  "id": "macros",
+  "name": "Macro / Keybind Mod",
+  "version": "1.0.0",
+  "author": "Mumfrey; adaptação Stein GFX: Davi Aires",
+  "description": "Macro / Keybind Mod 0.11.4 adaptado para Stein GFX, com editor e configurações em Controles.",
+  "entry": "com.litemod.MacroBridge",
+  "loader": "0.1.27"
+}

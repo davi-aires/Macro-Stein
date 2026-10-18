@@ -9,7 +9,7 @@ Executada em 18/10/2026, com Minecraft 1.8.9, Loader 0.1.27, Bridge 0.1.21 e Ste
 - Controles extras e clique no botão Macro Settings: passaram.
 - Atribuições, editor, seleção e botão de parar: passaram.
 - Execução de `SET` pelo interpretador original: passou.
-- Todos os 45 recursos não Java do pacote base foram preservados byte a byte.
+- Na preparação inicial, os 45 recursos não Java foram preservados byte a byte. Na release, somente steinmod.json muda para registrar versão, créditos e Loader mínimo; os demais 44 continuam preservados.
 - As classes gráficas geradas são idênticas às do pacote anteriormente validado no jogo. A classe de entrada foi recompilada com o compilador atual e passou nos testes de comportamento.
 
 O ambiente restrito registrou falhas de conexão loopback no subsistema de rede do Loader e um aviso de metadata de resourcepack do pacote base. Esses avisos não impediram os testes locais de interface. Não foi feita validação de conexão, permissões ou comandos de servidor.

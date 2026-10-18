@@ -100,6 +100,14 @@ def main():
                       ["Svg7Graphics.java", "Svg7Logic.java", "Svg7Reflect.java"]], gfx, cp + [intermediate])
         artifact = work / "Macros.steinmod"
         run(java, "-cp", patch_cp, "PatchMacrosGfx", intermediate, artifact, gfx)
+        # The distribution manifest describes this adaptation, not the older base.
+        packaged = work / "Macros-release.steinmod"
+        with zipfile.ZipFile(artifact) as source, zipfile.ZipFile(packaged, "w", zipfile.ZIP_DEFLATED) as output:
+            for entry in source.infolist():
+                data = ((ROOT / "src/main/resources/steinmod.json").read_bytes()
+                        if entry.filename == "steinmod.json" else source.read(entry))
+                output.writestr(entry, data)
+        packaged.replace(artifact)
         tests = work / "tests"
         compile_java(sorted((ROOT / "tests/java").glob("*.java")), tests, cp + [artifact])
         test_cp = os.pathsep.join(map(str, [tests, artifact] + cp))

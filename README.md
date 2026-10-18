@@ -8,7 +8,21 @@ Adaptação do **Macro / Keybind Mod 0.11.4** para Minecraft 1.8.9 com **Stein L
 - A tela de Controles volta a mostrar a combinação de teclas, o vínculo de override e o botão **Macro Settings...**, que abre a tela de atalhos.
 - O interpretador, os scripts e os recursos do mod original são preservados.
 
-Este repositório contém **a adaptação e seu aplicador**, não o código completo do Macros. O pacote original, o Minecraft e as bibliotecas do Stein são fornecidos pela instalação local. BetterSprint e outros mods não fazem parte deste projeto.
+Este repositório contém **a adaptação e seu aplicador**, não o código completo do Macros. O pacote pronto é distribuído nas releases com autorização informada pelo mantenedor. O pacote original, o Minecraft e as bibliotecas do Stein são fornecidos pela instalação local. BetterSprint e outros mods não fazem parte deste projeto.
+
+## Download e atualizações
+
+Baixe **Macros.steinmod** na [última release](https://github.com/davi-aires/Macro-Stein/releases/latest).
+
+Para instalar e receber atualizações pelo **Stein Client**, adicione este link em mods de terceiros:
+
+```text
+https://github.com/davi-aires/Macro-Stein/releases/latest/download/steinmods.json
+```
+
+O índice inclui a versão, o Loader mínimo e o SHA256 do arquivo. O `modId` continua sendo `macros`, preservando a identificação do mod original. Se uma fonte oficial fornecer esse mesmo `modId`, o Client dará prioridade à versão oficial, conforme o [guia do SDK](https://github.com/Stein-Project/sdk#publishing-your-mod).
+
+A versão **1.0.0** identifica esta adaptação; o interpretador continua sendo o Macro / Keybind Mod **0.11.4**. O pacote exige Loader **0.1.27** ou superior e foi validado com Bridge **0.1.21**. Versões futuras do motor precisam de nova validação.
 
 ## Compilar
 
@@ -60,6 +74,7 @@ Verificações: três controles extras do Macros, clique real em **Macro Setting
 
 ```text
 src/main/java/       adaptadores de entrada, desenho e reflexão
+src/main/resources/ manifest da versão distribuída
 src/patcher/java/    aplicação das alterações de bytecode
 scripts/            build e teste de interface
 tests/java/         testes de entrada, compatibilidade e interface
@@ -73,10 +88,20 @@ Veja [a arquitetura](docs/architecture.md) e [o histórico](changelog/1.0.0.pt_B
 
 Ao alterar a adaptação, execute o build e o teste de interface. Preserve o formato dos scripts, as configurações existentes e as métricas das fontes. Mudanças nas versões do Loader, Bridge ou GFX exigem nova validação: esta adaptação usa também classes internas do Stein.
 
-Não adicione binários, arquivos da instalação, configurações pessoais, logs ou mods de terceiros ao Git. Eles são ignorados pelo `.gitignore`. A pasta está preparada para publicar os fontes da adaptação; o resultado do build fica local.
+Não adicione binários, arquivos da instalação, configurações pessoais ou logs ao Git. Eles são ignorados pelo `.gitignore`. Os pacotes distribuídos ficam como assets das releases, separados dos fontes.
+
+## Preparar uma publicação
+
+1. Atualize `version` em `src/main/resources/steinmod.json` e escreva `changelog/<versão>.pt_BR.md`.
+2. Execute o build, os testes de interface e `python -m unittest discover -s tests -p 'test_*.py'`.
+3. Execute `python scripts/prepare_release.py`. Ele cria `dist/Macros.steinmod`, `steinmods.json`, `SHA256SUMS.txt` e `notes.md`, sem publicar nada.
+4. Faça commit dos fontes, crie a tag `v<versão>` e crie uma release estável nessa tag, com os três assets e o texto de `notes.md`. Não inclua o MigrationProbe.
+5. Confira o link fixo do índice e o SHA256 do download antes de anunciar a versão.
+
+O build permanece local porque depende do pacote base e das bibliotecas da instalação. O workflow de CI testa os scripts e a geração do índice; ele não baixa uma cópia privada do mod original. Detalhes em [docs/publishing.md](docs/publishing.md).
 
 ## Créditos e distribuição
 
 Macro / Keybind Mod é de **Mumfrey**. Este projeto não é uma publicação oficial do mod nem do Stein. Veja [NOTICE](NOTICE) para a origem dos componentes. A licença do repositório Replay não é aplicada a este projeto; nenhuma licença de distribuição foi escolhida para os fontes desta adaptação.
 
-O pacote base traz a indicação **“Local use only: do not redistribute”**. Por isso ele e o pacote derivado não são incluídos no repositório ou em releases. Minecraft e Stein também não são incluídos.
+O pacote base traz uma indicação de uso local; a distribuição desta adaptação foi autorizada pelo mantenedor, que informou ter autorização para redistribuir o Macros original junto com ela. A autoria original e suas condições de licença são preservadas. Minecraft e as bibliotecas do Stein não são incluídos no pacote.

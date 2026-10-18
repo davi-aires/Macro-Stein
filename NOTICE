@@ -1,9 +1,12 @@
 Macros para Stein GFX — adaptação de compatibilidade
 
 Macro / Keybind Mod 0.11.4: Mumfrey (conforme steinmod.json do pacote base).
-O pacote base e o resultado derivado não integram os fontes deste repositório.
+O pacote base e o resultado derivado não integram os fontes deste repositório;
+o resultado adaptado é distribuído separadamente nas releases.
 O metadata original identifica o pacote como de uso local, sem redistribuição.
-Sua autoria e suas condições de uso não são substituídas por este projeto.
+Em 18/10/2026, o mantenedor informou possuir autorização para redistribuir
+o Macros original junto com a adaptação. A distribuição é feita com base
+nessa autorização informada, sem substituir a autoria ou a licença original.
 
 Stein Loader, Stein Bridge e Stein GFX: componentes do projeto Stein,
 referenciados da instalação local; não incluídos.

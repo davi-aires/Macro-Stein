@@ -15,6 +15,6 @@ Minecraft 1.8.9, Stein Loader 0.1.27, Bridge 0.1.21 e GFX ligado. A compatibilid
 
 `TestSvg7Input` verifica chat, ordem, consumo de teclas, botões, scroll e overflow. `TestGfxCompatibility` invoca o verificador real do Loader. `MigrationProbe`, carregado apenas na instância isolada, testa telas e execução do interpretador original.
 
-O build preserva os recursos não alterados do arquivo de entrada. Os hashes de entrada e saída são registrados localmente; dependências de compilação têm hashes fixados. O teste gráfico usa uma cópia dos mods e um diretório de jogo separado, sem copiar configurações pessoais de macros.
+O build preserva os recursos não alterados do arquivo de entrada. Apenas `steinmod.json` é substituído pelo manifest de distribuição, com versão da adaptação, Loader mínimo, descrição e créditos. Os hashes de entrada e saída são registrados localmente; dependências de compilação têm hashes fixados. O teste gráfico usa uma cópia dos mods e um diretório de jogo separado, sem copiar configurações pessoais de macros.
 
 Não há envio de pacotes adicionais, alteração das bibliotecas instaladas ou configuração automática do GFX.
