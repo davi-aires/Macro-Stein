@@ -1,0 +1,24 @@
+Macros para Stein GFX — adaptação de compatibilidade
+
+Macro / Keybind Mod 0.11.4: Mumfrey (conforme steinmod.json do pacote base).
+O pacote base e o resultado derivado não integram os fontes deste repositório.
+O metadata original identifica o pacote como de uso local, sem redistribuição.
+Sua autoria e suas condições de uso não são substituídas por este projeto.
+
+Stein Loader, Stein Bridge e Stein GFX: componentes do projeto Stein,
+referenciados da instalação local; não incluídos.
+https://github.com/Stein-Project
+
+Dependências de build, obtidas separadamente do Maven Central:
+- ASM: https://asm.ow2.io/
+- Eclipse JDT / ECJ: https://eclipse.dev/jdt/
+Cada componente mantém seus próprios avisos e condições de licença.
+
+Minecraft: Mojang / Microsoft; não incluído.
+
+Os adaptadores Svg7Input, Svg7Graphics, Svg7Logic, Svg7Reflect e os
+aplicadores PatchMacros e PatchMacrosGfx são os fontes da adaptação local.
+Não foi escolhida uma licença de distribuição para esses fontes.
+
+Estrutura de apresentação inspirada em https://github.com/stein-project/replay.
+Nenhum código desse repositório foi copiado.

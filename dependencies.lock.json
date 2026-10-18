@@ -1,0 +1,17 @@
+[
+  {
+    "file": "asm-9.8.jar",
+    "url": "https://repo.maven.apache.org/maven2/org/ow2/asm/asm/9.8/asm-9.8.jar",
+    "sha256": "876eab6a83daecad5ca67eb9fcabb063c97b5aeb8cf1fca7a989ecde17522051"
+  },
+  {
+    "file": "asm-tree-9.8.jar",
+    "url": "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/9.8/asm-tree-9.8.jar",
+    "sha256": "14b7880cb7c85eed101e2710432fc3ffb83275532a6a894dc4c4095d49ad59f1"
+  },
+  {
+    "file": "ecj-3.43.0.jar",
+    "url": "https://repo.maven.apache.org/maven2/org/eclipse/jdt/ecj/3.43.0/ecj-3.43.0.jar",
+    "sha256": "c786468c65e906498e7e36ece4e0d04c6d3dd34c9a61b34a3a5b512801911a82"
+  }
+]
