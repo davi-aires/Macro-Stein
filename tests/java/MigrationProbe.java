@@ -15,10 +15,10 @@ import org.lwjgl.opengl.GL11;
 /** Test-only mod: opens Macros screens without touching an existing world. */
 public final class MigrationProbe implements SteinMod {
     private int ticks;
-    private boolean bindingShot, editorShot, overlayShot, controlsShot;
+    private boolean bindingShot, editorShot, overlayShot, controlsShot, itemPromptShot;
     public void onTickEnd() {
         ticks++;
-        if (ticks != 10 && ticks != 30 && ticks != 40 && ticks != 100 && ticks != 120 && ticks != 160) return;
+        if (ticks != 10 && ticks != 30 && ticks != 40 && ticks != 100 && ticks != 120 && ticks != 160 && ticks != 180 && ticks != 220) return;
         try {
             Class<?> mcClass = Class.forName("ave");
             Object mc = mcClass.getMethod("A").invoke(null);
@@ -78,11 +78,33 @@ public final class MigrationProbe implements SteinMod {
                 field.setAccessible(true);
                 Object editor = field.get(screen);
                 editor.getClass().getMethod("keyTyped", char.class, int.class).invoke(editor, '\u0001', 30);
+            } else if (ticks == 160) {
+                Class<?> targetType = Class.forName("net.eq2online.macros.interfaces.IMacroParamTarget");
+                final Object[] params = new Object[1];
+                Object target = java.lang.reflect.Proxy.newProxyInstance(targetType.getClassLoader(), new Class<?>[]{targetType},
+                    (proxy, method, arguments) -> {
+                        if (method.getName().equals("getTargetString")) return "$$i:d";
+                        if (method.getName().equals("getIteration")) return 1;
+                        if (method.getName().equals("getDisplayName")) return "Item prompt test";
+                        if (method.getName().equals("getPromptMessage")) return "Select an item";
+                        if (method.getName().equals("getNextParam") || method.getName().equals("hasRemainingParams"))
+                            return params[0].getClass().getMethod(method.getName()).invoke(params[0]);
+                        return null;
+                    });
+                params[0] = Class.forName("net.eq2online.macros.core.MacroParams").getConstructor(targetType).newInstance(target);
+                params[0].getClass().getMethod("evaluateParams").invoke(params[0]);
+                Object screen = Class.forName("net.eq2online.macros.gui.screens.GuiMacroParam").getConstructor(targetType).newInstance(target);
+                mcClass.getMethod("a", Class.forName("axu")).invoke(mc, screen);
+            } else if (ticks == 180) {
+                Object screen = mcClass.getField("m").get(mc);
+                if (screen == null || !screen.getClass().getSimpleName().equals("GuiMacroParam"))
+                    throw new AssertionError("Item prompt did not open: " + screen);
+                System.out.println("[migration-test] Item selection prompt opened using the Venda prompt syntax");
             } else {
                 Object screen = mcClass.getField("m").get(mc);
-                if (!screen.getClass().getName().equals("net.eq2online.macros.gui.screens.GuiEditTextFile"))
+                if (!screen.getClass().getName().equals("net.eq2online.macros.gui.screens.GuiMacroParam"))
                     throw new AssertionError("Unexpected screen: " + screen);
-                if (!bindingShot || !editorShot || !overlayShot || !controlsShot) throw new AssertionError("Missing rendered screenshots");
+                if (!bindingShot || !editorShot || !overlayShot || !controlsShot || !itemPromptShot) throw new AssertionError("Missing rendered screenshots");
                 System.out.println("[migration-test] GFX migration checks complete");
             }
         } catch (Throwable failure) {
@@ -109,6 +131,14 @@ public final class MigrationProbe implements SteinMod {
                     .invoke(null, font, "Macro stop button", 20, 30, 22, 31, true);
                 screenshot("macros-overlay.png"); overlayShot = true;
                 System.out.println("[migration-test] Overlay stop button with color inversion rendered");
+            }
+            if (ticks >= 190 && !itemPromptShot && screen.getClass().getSimpleName().equals("GuiMacroParam")) {
+                Field listField = screen.getClass().getDeclaredField("itemListBox"); listField.setAccessible(true);
+                Object list = listField.get(screen);
+                int count = ((Number) list.getClass().getMethod("getItemCount").invoke(list)).intValue();
+                if (count <= 0) throw new AssertionError("Item selector list is empty");
+                screenshot("macros-item-prompt.png"); itemPromptShot = true;
+                System.out.println("[migration-test] Item selector icons rendered without a cached itemRenderer");
             }
             if (ticks >= 140 && !editorShot) {
                 screenshot("macros-editor.png"); editorShot = true;

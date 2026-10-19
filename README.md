@@ -7,6 +7,7 @@ Adaptação do **Macro / Keybind Mod 0.11.4** para Minecraft 1.8.9 com **Stein L
 - Cursor e botão de parar mantêm a inversão de cores original.
 - A tela de Controles volta a mostrar a combinação de teclas, o vínculo de override e o botão **Macro Settings...**, que abre a tela de atalhos.
 - O interpretador, os scripts e os recursos do mod original são preservados.
+- A versão 1.0.1 corrige o crash ao desenhar ícones nos seletores de itens (`$$i`), incluindo prompts usados por macros de venda.
 
 Este repositório contém **a adaptação e seu aplicador**, não o código completo do Macros. O pacote pronto é distribuído nas releases com autorização informada pelo mantenedor. O pacote original, o Minecraft e as bibliotecas do Stein são fornecidos pela instalação local. BetterSprint e outros mods não fazem parte deste projeto.
 
@@ -22,7 +23,7 @@ https://github.com/davi-aires/Macro-Stein/releases/latest/download/steinmods.jso
 
 O índice inclui a versão, o Loader mínimo e o SHA256 do arquivo. O `modId` continua sendo `macros`, preservando a identificação do mod original. Se uma fonte oficial fornecer esse mesmo `modId`, o Client dará prioridade à versão oficial, conforme o [guia do SDK](https://github.com/Stein-Project/sdk#publishing-your-mod).
 
-A versão **1.0.0** identifica esta adaptação; o interpretador continua sendo o Macro / Keybind Mod **0.11.4**. O pacote exige Loader **0.1.27** ou superior e foi validado com Bridge **0.1.21**. Versões futuras do motor precisam de nova validação.
+A versão **1.0.1** identifica esta adaptação; o interpretador continua sendo o Macro / Keybind Mod **0.11.4**. O pacote exige Loader **0.1.27** ou superior e foi validado com Bridge **0.1.21**. Versões futuras do motor precisam de nova validação.
 
 ## Compilar
 
@@ -68,7 +69,7 @@ python scripts/test_launch.py --game-dir "CAMINHO/DA/.steinclient" --probe --gl-
 
 O teste abre uma janela temporária e a encerra ao concluir. Usa as bibliotecas e os assets da instalação, carrega somente o Macros e o probe em `build/test-gfx-true-*` e usa um perfil de teste sem autenticação. Não abre mundos nem usa a sessão da instância principal. Logs e capturas ficam nessa pasta de build.
 
-Verificações: três controles extras do Macros, clique real em **Macro Settings...**, tela de atribuições, editor, seleção, botão de parar e execução de uma macro `SET` pelo interpretador original. Não testa permissões ou comandos de servidores.
+Verificações: três controles extras do Macros, clique real em **Macro Settings...**, tela de atribuições, editor, seleção, botão de parar e execução de uma macro `SET` pelo interpretador original e seletor de itens `$$i:d` com ícones. Não testa permissões ou comandos de servidores.
 
 ## Organização
 
@@ -82,7 +83,7 @@ docs/               detalhes técnicos e validação
 changelog/          histórico da adaptação
 ```
 
-Veja [a arquitetura](docs/architecture.md) e [o histórico](changelog/1.0.0.pt_BR.md).
+Veja [a arquitetura](docs/architecture.md) e [o histórico da versão atual](changelog/1.0.1.pt_BR.md).
 
 ## Contribuir
 

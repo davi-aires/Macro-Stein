@@ -15,3 +15,7 @@ Executada em 18/10/2026, com Minecraft 1.8.9, Loader 0.1.27, Bridge 0.1.21 e Ste
 O ambiente restrito registrou falhas de conexão loopback no subsistema de rede do Loader e um aviso de metadata de resourcepack do pacote base. Esses avisos não impediram os testes locais de interface. Não foi feita validação de conexão, permissões ou comandos de servidor.
 
 Logs e capturas ficam somente na pasta ignorada `build/`. Não são necessários para compilar a adaptação.
+
+## 1.0.1 — seletor de itens (19/10/2026)
+
+O teste foi ampliado para abrir `GuiMacroParam` pelo parser real de `$$i:d`, como no prompt da macro de venda. Na 1.0.0 reproduziu o mesmo crash de `ItemStackInfo.itemRenderer` nulo. Na 1.0.1 abriu a lista com itens, desenhou os ícones e capturou a tela com GFX ligado. Os demais testes de interface, entrada e compatibilidade também passaram. Não foram executadas vendas ou operações em servidor.

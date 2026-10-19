@@ -18,6 +18,9 @@ public final class PatchMacrosGfx implements Opcodes {
                 try (InputStream in = source.getInputStream(entry)) { bytes = read(in); }
                 String name = entry.getName();
                 if (name.equals("com/mumfrey/liteloader/gl/GL.class")) { bytes = patchGl(bytes); patched++; }
+                if (name.equals("net/eq2online/macros/struct/ItemStackInfo.class")) {
+                    bytes = patchItemIcons(bytes); patched++;
+                }
                 if (name.equals("net/eq2online/macros/rendering/FontRendererLegacy.class") ||
                     name.equals("net/eq2online/macros/rendering/FontRendererTextEditor.class")) {
                     bytes = patchFont(bytes); patched++;
@@ -25,7 +28,7 @@ public final class PatchMacrosGfx implements Opcodes {
                 if (name.endsWith(".class")) bytes = routeTessellator(bytes);
                 output.putNextEntry(new ZipEntry(name)); output.write(bytes); output.closeEntry();
             }
-            if (patched != 3) throw new IllegalStateException("Expected exactly three graphics classes");
+            if (patched != 4) throw new IllegalStateException("Expected exactly four graphics classes");
             try (DirectoryStream<Path> helpers = Files.newDirectoryStream(Paths.get(args[2]), "Svg7*.class")) {
                 for (Path helper : helpers) {
                     output.putNextEntry(new ZipEntry(helper.getFileName().toString()));
@@ -33,13 +36,38 @@ public final class PatchMacrosGfx implements Opcodes {
                 }
             }
         }
-        System.out.println("Patched two fonts and overlay state; Stein GFX remains enabled");
+        System.out.println("Patched fonts, overlay state and item-selector icons; Stein GFX remains enabled");
     }
 
     private static byte[] read(InputStream in) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream(); byte[] buffer = new byte[8192]; int size;
         while ((size = in.read(buffer)) != -1) out.write(buffer, 0, size);
         return out.toByteArray();
+    }
+
+    private static byte[] patchItemIcons(byte[] bytes) {
+        ClassNode cls = new ClassNode(); new ClassReader(bytes).accept(cls, 0);
+        int replaced = 0;
+        for (MethodNode method : cls.methods) {
+            if (!method.name.equals("renderIcon") || !method.desc.equals("(Lzx;II)V")) continue;
+            method.instructions.clear(); method.tryCatchBlocks.clear(); method.localVariables = null;
+            LabelNode done = new LabelNode();
+            method.instructions.add(new VarInsnNode(ALOAD, 0));
+            method.instructions.add(new JumpInsnNode(IFNULL, done));
+            method.instructions.add(new VarInsnNode(ALOAD, 0));
+            method.instructions.add(new VarInsnNode(ILOAD, 1));
+            method.instructions.add(new VarInsnNode(ILOAD, 2));
+            method.instructions.add(new InsnNode(ICONST_0));
+            method.instructions.add(new MethodInsnNode(INVOKESTATIC, "dev/xavier/stein/loader/api/Render",
+                "item", "(Ljava/lang/Object;IIZ)V", false));
+            method.instructions.add(done);
+            method.instructions.add(new FrameNode(F_SAME, 0, null, 0, null));
+            method.instructions.add(new InsnNode(RETURN));
+            replaced++;
+        }
+        if (replaced != 1) throw new IllegalStateException("Expected one static item-icon renderer");
+        ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        cls.accept(writer); return writer.toByteArray();
     }
 
     private static byte[] patchFont(byte[] bytes) {

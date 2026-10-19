@@ -9,6 +9,8 @@ O patch mantém o pacote Macros original e substitui pontos de integração inco
 
 O namespace das classes é preservado para manter compatibilidade com o bytecode já adaptado. Compilação usa bytecode Java 8, com ECJ executado em Java 25 para ler as bibliotecas recentes do Stein.
 
+5. `ItemStackInfo.renderIcon` usa `Render.item` do Loader em vez do campo estático `itemRenderer`, que pode estar nulo. Isso mantém os ícones do seletor de itens no caminho nativo do Stein GFX, sem alterar os parâmetros ou o interpretador.
+
 ## Escopo verificado
 
 Minecraft 1.8.9, Stein Loader 0.1.27, Bridge 0.1.21 e GFX ligado. A compatibilidade com versões posteriores não é presumida: nomes internos podem mudar.
